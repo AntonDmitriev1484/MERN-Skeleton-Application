@@ -53,7 +53,7 @@ userSchema.methods =
         function(plainText) { //Just returns true or false if the plainText received from the form matches the hashed password
             return this.encryptPassword(plainText) === this.hashed_password
         }
-    },
+    }, //
     { encryptPassword: //Generates an encrypted hash for the user from plain-text password and salt
         function(password){ //Takes some password string
             if (!password){ //Just exception handling I guess???
