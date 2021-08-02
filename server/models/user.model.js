@@ -102,3 +102,27 @@ userSchema.methods =
 
 //Now that we have a complete User model in place, and set up in mongoose, we can start working on CRUD operations for Users with API endpoints
 export default Mongoose.model('User', userSchema)
+
+/*
+With Mongoose, everything is derived from a Schema. Let's get a reference to it and define our kittens.
+
+const kittySchema = new mongoose.Schema({
+  name: String
+});
+So far so good. We've got a schema with one property, name, which will be a String. The next step is compiling our schema into a Model.
+
+const Kitten = mongoose.model('Kitten', kittySchema);
+A model is a class with which we construct documents. In this case, each document will be a kitten with properties and behaviors as declared in our schema.
+
+Functions added to the methods property of a schema get compiled into the Model prototype and exposed on each document instance:
+
+
+const fluffy = new Kitten({ name: 'fluffy' });
+fluffy.speak(); // "Meow name is fluffy"
+We have talking kittens! But we still haven't saved anything to MongoDB. Each document can be saved to the database by calling its save method. The first argument to the callback will be an error if any occurred.
+
+  fluffy.save(function (err, fluffy) {
+    if (err) return console.error(err);
+    fluffy.speak();
+  });
+*/
