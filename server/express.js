@@ -6,6 +6,8 @@ import cors from 'cors'
 import helmet from 'helmet'
 import Template from './../template'
 
+import userRoutes from './routes/user.routes.js'
+
 //HOW JS imports work
 // Template now refers to the default export from our template js file
 // ./template means look for template in 'server'
@@ -35,5 +37,7 @@ app.get('/', (req, res) => { res.status(200).send(Template())}) //A lambda funct
 
 //Request, req
 //Response, res
+
+app.use('/', userRoutes) //Configures our express app to use the routes we defined with Express router
 
 export default app
