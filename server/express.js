@@ -4,7 +4,12 @@ import cookieParser from 'cookie-parser'
 import compress from 'compression'
 import cors from 'cors'
 import helmet from 'helmet'
+import Template from './../template'
 
+//HOW JS imports work
+// Template now refers to the default export from our template js file
+// ./template means look for template in 'server'
+// ./../template means look for template one layer higher, in the project file
 
 const app = express() //instantiates an express app
 //Configuring this express instance to use some of the dependencies we've added in with yarn
@@ -24,6 +29,11 @@ app.use(helmet())
 
 //Now we've configured our middleware to easily accept http requests
 
+// app.get('/', Template) Almost correct
+// '/' is the string which represents the root, any request with / means root, -> serve the template.js
+app.get('/', (req, res) => { res.status(200).send(Template())}) //A lambda function, not sure what res and req do as parameters, but they definitley send the Template()
 
+//Request, req
+//Response, res
 
 export default app
