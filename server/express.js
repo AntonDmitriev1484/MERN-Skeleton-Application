@@ -7,6 +7,7 @@ import helmet from 'helmet'
 import Template from './../template'
 
 import userRoutes from './routes/user.routes.js'
+import authRoutes from './routes/auth.routes.js'
 
 //HOW JS imports work
 // Template now refers to the default export from our template js file
@@ -33,11 +34,9 @@ app.use(helmet())
 
 // app.get('/', Template) Almost correct
 // '/' is the string which represents the root, any request with / means root, -> serve the template.js
-app.get('/', (req, res) => { res.status(200).send(Template())}) //A lambda function, not sure what res and req do as parameters, but they definitley send the Template()
+app.get('/', (req, res) => { res.status(200).send(Template())}) //A lambda function, automatically sends the Template.js html 
+                                                                //as a JSON response when localhost:3000 is reached
 
-//Request, req
-//Response, res
-
-app.use('/', userRoutes) //Configures our express app to use the routes we defined with Express router
-
+app.use('/', userRoutes) //Configures our express app to use the routes we defined with Express router, going from localhost:3000
+app.use('/', authRoutes)
 export default app

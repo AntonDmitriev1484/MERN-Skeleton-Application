@@ -1,7 +1,8 @@
 //Contains definitions of all controller methods.
 import userModel from "../models/user.model"
 import extend from 'lodash/extend'
-import errorHandler from './error.controller'
+import errorHandler from './../helpers/dbErrorHandler.js'
+// server\helpers\dbErrorHandler.js
 
 //Where do these (req, res) parameters get filled in from???
 

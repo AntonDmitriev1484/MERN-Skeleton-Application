@@ -101,7 +101,7 @@ userSchema.methods =
 
 
 //Now that we have a complete User model in place, and set up in mongoose, we can start working on CRUD operations for Users with API endpoints
-export default Mongoose.model('User', userSchema)
+export default mongoose.model('User', userSchema)
 
 /*
 With Mongoose, everything is derived from a Schema. Let's get a reference to it and define our kittens.
