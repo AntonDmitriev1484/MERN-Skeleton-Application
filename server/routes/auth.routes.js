@@ -13,10 +13,12 @@ import authControl from '../controllers/auth.controller.js'
 
 */
 
-const router = Express.router
+const router = express.Router()
 
 router.route('/auth/signin').post(authControl.signin)
 
 router.route('/auth/signout').get(authControl.signout)
 
 export default router
+
+//Note: Most of your bugs are literally just typos, pay attention

@@ -23,7 +23,7 @@ const app = express() //instantiates an express app
 //looking at the body of exchanged JSON or http comms
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extend: true}))
+app.use(bodyParser.urlencoded({extended: true}))
 
 app.use(cookieParser())
 app.use(compress())
@@ -39,4 +39,16 @@ app.get('/', (req, res) => { res.status(200).send(Template())}) //A lambda funct
 
 app.use('/', userRoutes) //Configures our express app to use the routes we defined with Express router, going from localhost:3000
 app.use('/', authRoutes)
+
+//Auth error handling for express JWT
+app.use((err, req, res, next) => {
+    if (err.name === 'UnauthorizedError'){
+
+        res.status(401).json({"error": err.name + ": " + err.message})
+    }
+    else if (err) {
+        res.status(401).json({"error": err.name + ": " + err.message})
+        console.log(err)
+    }
+})
 export default app

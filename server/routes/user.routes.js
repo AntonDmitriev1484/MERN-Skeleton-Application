@@ -26,12 +26,13 @@ router.route('/api/users')
 .get(userCtrl.list)
 .post(userCtrl.create)
 
+
 router.route('/api/users/:userId') //We add in authCtrl controllers here, because we want to block off access to these API endpoints unless the client is authorized
 .get(authCtrl.requireSignin, userCtrl.read)
 .put(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.update)
 .delete(authCtrl.requireSignin, authCtrl.hasAuthorization, userCtrl.remove)
 
-router.param('userId', userCtrl.userByID)
+router.param('userId', userCtrl.userById)
 //Whenever there is a request which has the :userId parameter in it, 
 //the app will execute the userById function, which fetches the user data, and loads it
 //into a Express request object. Before sending it to the next controller function.

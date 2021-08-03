@@ -1,4 +1,4 @@
-import userModel from "../models/user.model"
+import User from "../models/user.model"
 import jwt from 'jsonwebtoken' //Since we're now working with authentication and authorization
 import expressJwt from 'express-jwt'
 import config from './../../config/config'
@@ -22,21 +22,17 @@ const signin = async (req, res) => {
 
         //If we make it through both of these if statements then that means the user's credentials are correct
 
-        expressJwt({
-            secret: 'secret',
-            algorithms: ['HS256']
-          })
-          
-          //?????? No clue why this is asking me for an algorith, as jwt is something I imported from a package
+        
         const token = jwt.sign({ _id: user._id}, config.jwtSecret) //Each user has an _id value and this is used to create our jwt token
         res.cookie('t', token, { expire: new Date() + 9999}) //Attaching this token as a cookie to the res JSON, setting an expiration date and naming it
 
         return res.json({
             token, //The json we send back contains our token as well as the user object which was just signed in
-            user: {
+            user : {
                 _id: user._id,
                 name: user.name,
                 email: user.email
+
             }
         })
         //Could also add the token into the header of the json file under Authorization label
@@ -61,7 +57,8 @@ const signout = async (req, res) => {
 
 const requireSignin = expressJwt({ //Checks if the incoming request has a valid JWT in its Authorization header. Otherwise throws an authentication error
     secret: config.jwtSecret,
-    userProperty: 'auth'
+    userProperty: 'auth',
+    algorithms: ['HS256'] //Need to include this when instantiating an expressJwt
 })
 
 const hasAuthorization = async (req, res, next) => {

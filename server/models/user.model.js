@@ -28,9 +28,7 @@ const u = { //Basically making a 2D list of fields
             required: "Password is required"
 
         },
-        salt: { //The random data which will help create a hash function for our password
-            type:String
-        }
+        salt: String
         
 
         }
@@ -48,13 +46,13 @@ userSchema.virtual('password').set(function(password){
 })
 
 //Encryption logic and salt generation logic are defined in userSchema.methods
-userSchema.methods =
-    { authenticate: //Called to verify sign-in attempts by looking at user data
+userSchema.methods = 
+    { 
+        authenticate: //Called to verify sign-in attempts by looking at user data
         function(plainText) { //Just returns true or false if the plainText received from the form matches the hashed password
             return this.encryptPassword(plainText) === this.hashed_password
-        }
-    }, //
-    { encryptPassword: //Generates an encrypted hash for the user from plain-text password and salt
+        },
+     encryptPassword: //Generates an encrypted hash for the user from plain-text password and salt
         function(password){ //Takes some password string
             if (!password){ //Just exception handling I guess???
                 return ''
@@ -66,15 +64,18 @@ userSchema.methods =
             catch (err) {
                 return ''
             }
-        }
-
-    },
-    { makeSalt: //Generates a unique and random salt value for the user
+        },
+     makeSalt: //Generates a unique and random salt value for the user
         function(){
             return Math.round((new Date().valueOf() * Math.random())) + '' //Our arbitrary salt formula
         }
     }
 
+    //Literally just spent an hour debugging this because I added an extra set of brackets
+    //this made makeSalt() not work as a function and caused a promise rejection
+
+
+    
     //Password field validation
 
     //Adding a validation function to the hashed_password field in our schema
@@ -126,3 +127,72 @@ We have talking kittens! But we still haven't saved anything to MongoDB. Each do
     fluffy.speak();
   });
 */
+
+// import mongoose from 'mongoose'
+// import crypto from 'crypto'
+// const UserSchema = new mongoose.Schema({
+//   name: {
+//     type: String,
+//     trim: true,
+//     required: 'Name is required'
+//   },
+//   email: {
+//     type: String,
+//     trim: true,
+//     unique: 'Email already exists',
+//     match: [/.+\@.+\..+/, 'Please fill a valid email address'],
+//     required: 'Email is required'
+//   },
+//   hashed_password: {
+//     type: String,
+//     required: "Password is required"
+//   },
+//   salt: String,
+//   updated: Date,
+//   created: {
+//     type: Date,
+//     default: Date.now
+//   }
+// })
+
+// UserSchema
+//   .virtual('password')
+//   .set(function(password) {
+//     this._password = password
+//     this.salt = this.makeSalt()
+//     this.hashed_password = this.encryptPassword(password)
+//   })
+//   .get(function() {
+//     return this._password
+//   })
+
+// UserSchema.path('hashed_password').validate(function(v) {
+//   if (this._password && this._password.length < 6) {
+//     this.invalidate('password', 'Password must be at least 6 characters.')
+//   }
+//   if (this.isNew && !this._password) {
+//     this.invalidate('password', 'Password is required')
+//   }
+// }, null)
+
+// UserSchema.methods = {
+//   authenticate: function(plainText) {
+//     return this.encryptPassword(plainText) === this.hashed_password
+//   },
+//   encryptPassword: function(password) {
+//     if (!password) return ''
+//     try {
+//       return crypto
+//         .createHmac('sha1', this.salt)
+//         .update(password)
+//         .digest('hex')
+//     } catch (err) {
+//       return ''
+//     }
+//   },
+//   makeSalt: function() {
+//     return Math.round((new Date().valueOf() * Math.random())) + ''
+//   }
+// }
+
+// export default mongoose.model('User', UserSchema)

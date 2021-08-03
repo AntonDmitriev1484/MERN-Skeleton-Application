@@ -1,10 +1,12 @@
+
 //Contains definitions of all controller methods.
-import userModel from "../models/user.model"
+import User from "../models/user.model"
 import extend from 'lodash/extend'
 import errorHandler from './../helpers/dbErrorHandler.js'
 // server\helpers\dbErrorHandler.js
 
 //Where do these (req, res) parameters get filled in from???
+
 
 const create = async (req, res) => { //create is a lambda function
     //async, we need to specify that this function is asynchronous, so that we can use the 'await' keyword
@@ -24,6 +26,8 @@ const create = async (req, res) => { //create is a lambda function
         })
     }
 }
+
+//THIS CODE ISN'T THE PROBLEM
 
 const list = async (req, res) => {
     try {
@@ -56,17 +60,16 @@ const userById = async (req, res, next, id) => {
            return res.status(400).json()({
                error: "User not found"
            })
-
-
-           req.profile = user //The user information gets loaded into the req JSON object's profile (not body)
-           next() //Moves onto the next function at this api endpoint, passing along the req JSON object
        }
+       
+       req.profile = user //The user information gets loaded into the req JSON object's profile (not body)
+       next() //Moves onto the next function at this api endpoint, passing along the req JSON object
    }
-   catch (err){
-    return res.status(400).json({
-        error: "Couldn't retreive user"
-    })
-}
+    catch (err){
+        return res.status(400).json({
+            error: "Couldn't retreive user"
+        })
+    }
 }
 
 const read = async (req, res) => {
@@ -82,7 +85,8 @@ const read = async (req, res) => {
 
 const update = async (req, res) => {
 
-    let user = req.profile
+    try {
+        let user = req.profile
     user = extend(user, req.body) //From lodash
     //This merges our loaded user object (stored in the req JSON's profile), with the changes requested in the req JSON's body of the http request
     user.updated = Date.now() //update the access field
@@ -91,6 +95,15 @@ const update = async (req, res) => {
     user.hashed_password = undefined //Clean the user object of sensitive data
     user.salt = undefined
     return res.json(user) //Return it to the user as a response json
+
+    }
+    catch (err) {
+
+        return res.status(400).json({
+            error: errorHandler.getErrorMessage(err)
+          })
+    }
+    
 }
 
 const remove = async (req, res) => {
@@ -110,3 +123,96 @@ const remove = async (req, res) => {
 }
 
 export default {create, userById, read, list, remove, update} //Have to export all of the lambda functions under default
+
+// import User from '../models/user.model'
+// import extend from 'lodash/extend'
+// import errorHandler from './../helpers/dbErrorHandler'
+
+// const create = async (req, res) => {
+//   const user = new User(req.body)
+//   try {
+//     await user.save()
+//     return res.status(200).json({
+//       message: "Successfully signed up!"
+//     })
+//   } catch (err) {
+//     return res.status(400).json({
+//       error: errorHandler.getErrorMessage(err)
+//     })
+//   }
+// }
+
+// /**
+//  * Load user and append to req.
+//  */
+// const userByID = async (req, res, next, id) => {
+//   try {
+//     let user = await User.findById(id)
+//     if (!user)
+//       return res.status('400').json({
+//         error: "User not found"
+//       })
+//     req.profile = user
+//     next()
+//   } catch (err) {
+//     return res.status('400').json({
+//       error: "Could not retrieve user"
+//     })
+//   }
+// }
+
+// const read = (req, res) => {
+//   req.profile.hashed_password = undefined
+//   req.profile.salt = undefined
+//   return res.json(req.profile)
+// }
+
+// const list = async (req, res) => {
+//   try {
+//     let users = await User.find().select('name email updated created')
+//     res.json(users)
+//   } catch (err) {
+//     return res.status(400).json({
+//       error: errorHandler.getErrorMessage(err)
+//     })
+//   }
+// }
+
+// const update = async (req, res) => {
+//   try {
+//     let user = req.profile
+//     user = extend(user, req.body)
+//     user.updated = Date.now()
+//     await user.save()
+//     user.hashed_password = undefined
+//     user.salt = undefined
+//     res.json(user)
+//   } catch (err) {
+//     return res.status(400).json({
+//       error: errorHandler.getErrorMessage(err)
+//     })
+//   }
+// }
+
+// const remove = async (req, res) => {
+//   try {
+//     let user = req.profile
+//     let deletedUser = await user.remove()
+//     deletedUser.hashed_password = undefined
+//     deletedUser.salt = undefined
+//     res.json(deletedUser)
+//   } catch (err) {
+//     return res.status(400).json({
+//       error: errorHandler.getErrorMessage(err)
+//     })
+//   }
+// }
+
+// export default {
+//   create,
+//   userByID,
+//   read,
+//   list,
+//   remove,
+//   update
+// }
