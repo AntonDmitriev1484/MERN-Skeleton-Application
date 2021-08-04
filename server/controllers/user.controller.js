@@ -27,8 +27,6 @@ const create = async (req, res) => { //create is a lambda function
     }
 }
 
-//THIS CODE ISN'T THE PROBLEM
-
 const list = async (req, res) => {
     try {
         let users = await User.find().select('name email updated created')
@@ -111,7 +109,10 @@ const remove = async (req, res) => {
         let user = req.profile
         user = await user.remove() //Here we let mongoose validate, and then remove() the user object from the database
         user.hashed_password = undefined
-        user.salt = underfined
+        user.salt = undefined
+        user.auth = undefined //Once you delete an account you should be automatically signed out.
+        //As in, you should lose your auth token, not sure if it does this.
+    
         return res.json(user)
 
     }

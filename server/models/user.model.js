@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import crypto from 'crypto' //Dont forget to IMPORT THINGS DUMBASS
 
 //Establishes how user data will be stored in the database
 
@@ -52,16 +53,18 @@ userSchema.methods =
         function(plainText) { //Just returns true or false if the plainText received from the form matches the hashed password
             return this.encryptPassword(plainText) === this.hashed_password
         },
-     encryptPassword: //Generates an encrypted hash for the user from plain-text password and salt
+        encryptPassword: //Generates an encrypted hash for the user from plain-text password and salt
         function(password){ //Takes some password string
+            
             if (!password){ //Just exception handling I guess???
                 return ''
             }
 
             try{
-                    return crypto.createHmac('sha1', this.salt).update(password).digest('hex')
+                 return crypto.createHmac('sha1', this.salt).update(password).digest('hex')
             }
             catch (err) {
+                console.log('error in')
                 return ''
             }
         },
@@ -93,7 +96,7 @@ userSchema.methods =
 
                 if (this.isNew && !this._password) { //this.isNew is a property of the mongoose document
                         //!this_password is basically the same thing as if this._password == null
-                        this.invalidate('password', 'Password is required')
+                        this.invalidate('password', 'Password is required!')
                 }
 
         }

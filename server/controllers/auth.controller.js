@@ -57,11 +57,17 @@ const signout = async (req, res) => {
 
 const requireSignin = expressJwt({ //Checks if the incoming request has a valid JWT in its Authorization header. Otherwise throws an authentication error
     secret: config.jwtSecret,
-    userProperty: 'auth',
+    userProperty: 'auth', //Sets up a propery 'auth', requests need a signin jwt cookie at this propery to pass onto any next controllers
     algorithms: ['HS256'] //Need to include this when instantiating an expressJwt
 })
 
+//Since cookies haven't really been configured on ARC
+//We have to manually add the jwt token to the header of our JSON request like so:
+//Header name:      Header value:
+//Authorization     Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTA5N2M0MzUxOWQzMzRjYzA0YmFhNmIiLCJpYXQiOjE2MjgwMjAxMzl9.TDYZfG50GL4qGKGt7SZJmrMMXYJxAxKBCJnyXMvgEh8
+
 const hasAuthorization = async (req, res, next) => {
+    
     const authorized = req.profile && req.auth && req.profile._id == req.auth._id
     //For a client to be authorized, the request most have a profile (from the loader getById), an authorization header (from requireSignin), and these two must have the _id.
 
