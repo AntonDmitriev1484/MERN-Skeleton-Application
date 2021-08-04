@@ -9,6 +9,9 @@ import Template from './../template'
 import userRoutes from './routes/user.routes.js'
 import authRoutes from './routes/auth.routes.js'
 
+import devBundle from './devBundle.js'
+import path from 'path'
+
 //HOW JS imports work
 // Template now refers to the default export from our template js file
 // ./template means look for template in 'server'
@@ -21,6 +24,19 @@ const app = express() //instantiates an express app
 //the dependencies that we're adding help abstract the requests going back and forth between front and back end
 //this makes our front-back end communication as simple as just 
 //looking at the body of exchanged JSON or http comms
+
+devBundle.compile(app)
+//Configures how our express app server side will work with the frontend during development
+//Should be commented out during production
+
+const CURRENT_WORKING_DIR = process.cwd()
+app.use ('/dist', express.static(path.join( CURRENT_WORKING_DIR, 'dist')))
+//Now the express server will server static files from the 'dist' folder.
+//Whenever a request is made starting with /dist, it will look for static resources
+//in the 'dist' folder. Bundled files from 'dist' get loaded to the frontend.
+
+//TLDR, all of the code we need will get combined (bundled) by webpack 
+//into one file/dist/bundle.js, and then served to the client.
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
