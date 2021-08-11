@@ -4,6 +4,7 @@
 
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import {Link} from 'react-router-dom'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
@@ -48,10 +49,13 @@ export default function Home() {
                     title="Unicorn Bicycle"/>
                 <CardContent>
                     <Typography variant="body2" component="p">
+                       
                         Welcome to the MERN Skeleton home page.
                     </Typography>
+                    <Link to="/signup"> Sign  up </Link>
+                    <Link to="/users"> Users </Link>
                 </CardContent>
-
+                
             </Typography>
         </Card>
 
