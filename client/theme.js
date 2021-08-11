@@ -1,8 +1,8 @@
 //Defining a custom theme for our skeleton application in client/theme.js using createMuiTheme
 //Exporting so that it can be used in App.js
 
-import {createMuiTheme } from '@material-ui/core/styles'
-import {pink } from '@material-ui/core/colors'
+import { createMuiTheme } from '@material-ui/core/styles'
+import { pink } from '@material-ui/core/colors'
 
 //createMuiTheme is just a fast way to set up a css theme for the entire react app
 

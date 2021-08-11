@@ -1,5 +1,6 @@
 //Top level React component
 
+
 import React from 'react'
 import MainRouter from './MainRouter'
 import {BrowserRouter} from 'react-router-dom'
@@ -21,14 +22,36 @@ const App = () => {
                 <MainRouter/> 
             </ThemeProvider>
         </BrowserRouter>
-
-
+        
     )
 
 }
 
+
+// import React from 'react'
+// import MainRouter from './MainRouter'
+// import {BrowserRouter} from 'react-router-dom'
+// import { ThemeProvider } from '@material-ui/styles'
+// import theme from './theme'
+// import { hot } from 'react-hot-loader'
+
+// const App = () => {
+//   React.useEffect(() => {
+//     const jssStyles = document.querySelector('#jss-server-side')
+//     if (jssStyles) {
+//       jssStyles.parentNode.removeChild(jssStyles)
+//     }
+//   }, [])
+//   return (
+//   <BrowserRouter>
+//       <ThemeProvider theme={theme}>
+//         <MainRouter/>
+//       </ThemeProvider>
+//   </BrowserRouter>
+// )}
+
 //NOTE THE PARENTHESE AROUND APP INSTEAD OF BRACKETS
-export default hot(module)(App) //exporting App so that it can be used within our main.js file
+export default  hot(module)(App) //exporting App so that it can be used within our main.js file
 //Marking the app component as hot enables live re-loading of all react components during development
 
 //Won't have to change main or app much after they're created, all changes will be in MainRouter and component files

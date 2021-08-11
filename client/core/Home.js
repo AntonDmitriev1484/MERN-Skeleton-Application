@@ -35,7 +35,8 @@ const useStyles = makeStyles(theme => ({
 //Material-UI uses JSS, so it abstracts more complex css-html objects, and uses javascript to stylize elements
 
 //COMPONENT DEFINITION
-function Home() {
+//Note: Uppercase first letters are used to specify React components
+export default function Home() {
     console.log("made it to home component")
     const classes = useStyles()
     //Note parentheses are used when returning html
@@ -57,5 +58,3 @@ function Home() {
     )
 }
 //This exported component, can now be used for composition with other components
-
-export default Home()
