@@ -9,8 +9,7 @@ app.listen(config.port, (err) =>{ //Sets express to listen on config.port, if an
     if (err){
         console.log(err)
     }
-    console.info('Server start on port %s', config.port) //We set up config.port to be 3000
-
+    console.info('Server start on port %s', config.port) //We set up config.port to be 3000    
 })
 
 //Configuring mongoose so that it uses 'native ES6 promises'

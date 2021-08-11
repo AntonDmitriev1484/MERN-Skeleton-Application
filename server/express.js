@@ -29,11 +29,6 @@ devBundle.compile(app)
 //Configures how our express app server side will work with the frontend during development
 //Should be commented out during production
 
-const CURRENT_WORKING_DIR = process.cwd()
-app.use ('/dist', express.static(path.join( CURRENT_WORKING_DIR, 'dist')))
-//Now the express server will server static files from the 'dist' folder.
-//Whenever a request is made starting with /dist, it will look for static resources
-//in the 'dist' folder. Bundled files from 'dist' get loaded to the frontend.
 
 //TLDR, all of the code we need will get combined (bundled) by webpack 
 //into one file/dist/bundle.js, and then served to the client.
@@ -45,6 +40,13 @@ app.use(cookieParser())
 app.use(compress())
 app.use(cors())
 app.use(helmet())
+
+
+//Now the express server will server static files from the 'dist' folder.
+//Whenever a request is made starting with /dist, it will look for static resources
+//in the 'dist' folder. Bundled files from 'dist' get loaded to the frontend.
+const CURRENT_WORKING_DIR = process.cwd()
+app.use ('/dist', express.static(path.join( CURRENT_WORKING_DIR, 'dist')))
 
 //Now we've configured our middleware to easily accept http requests
 
